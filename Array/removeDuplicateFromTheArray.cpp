@@ -24,7 +24,9 @@ int main()
     // cout << st.size() << endl;
 
     // Method 2 :-
-    if(nums.size() == 0) return 0;
+    if(nums.size() == 0) {
+        cout << 0 << endl;
+    }
     int j = 1;
     for(int i = 1; i < nums.size(); i++) {
          if(nums[i] != nums[j-1]) {
