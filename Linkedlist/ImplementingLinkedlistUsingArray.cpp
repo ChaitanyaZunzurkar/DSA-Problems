@@ -36,7 +36,7 @@ int main()
 {
     int n = 7;
     int arr[] = {10 , 20 , 30 , 40 , 50 , 60 , 70};
-    Node * root = arrToLinkedList(arr , 7);
+    Node * root = arrToLinkedList(arr , n);
     printLinkedlist(root);
     return 0;
 }
