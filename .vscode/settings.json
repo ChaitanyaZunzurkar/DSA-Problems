@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "*.dbclient-js": "javascript",
+        "*.ejs": "html",
+        "iostream": "cpp",
+        "chrono": "cpp",
+        "span": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}
