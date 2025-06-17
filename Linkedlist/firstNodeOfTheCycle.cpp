@@ -22,6 +22,25 @@ ListNode* detectCycle(ListNode* head) {
     return nullptr;
 }
 
+ListNode *findStartNodeOfTheCycle(ListNode *head) {
+    ListNode *slow = head;
+    ListNode *fast = head;
+
+    while(fast != nullptr && fast->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
+        if(slow == fast) {
+            slow = head;
+            while(slow != fast) {
+                slow = slow->next;
+                fast = fast->next;
+            }
+            return slow;
+        }
+    }
+    return nullptr;
+}
+
 int main() {
     int n;
     cout << "Enter number of nodes in the linked list: ";
@@ -61,7 +80,7 @@ int main() {
         tail->next = cycleStart;
     }
 
-    ListNode* result = detectCycle(head);
+    ListNode* result = findStartNodeOfTheCycle(head);
 
     if (result) {
         cout << "Cycle detected at node with value: " << result->val << endl;
