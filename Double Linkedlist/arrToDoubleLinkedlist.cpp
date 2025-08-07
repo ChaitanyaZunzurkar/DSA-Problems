@@ -34,18 +34,25 @@ Node * arrToDoubleLinkedList(int arr[] , int n) {
     return head;
 }
 
-void printDoubleLinkedlist(Node * head) {
-    while(head != NULL) {
-        cout << head->val << endl;
+void printDoubleLinkedlist(Node* head) {
+    cout << "This is linked list traversed from the head" << endl;
+
+    Node* tail = nullptr;
+    while (head != NULL) {
+        cout << head->val << " ";
+        tail = head;           
         head = head->next;
     }
-    cout << endl;
 
-    while(head != NULL) {
-        cout << head->val << endl;
-        head = head->back;
+    cout << endl;
+    cout << "This is linked list traversed from the tail" << endl;
+
+    while (tail != NULL) {
+        cout << tail->val << " ";
+        tail = tail->back;
     }
 
+    cout << endl;
 }
 
 
