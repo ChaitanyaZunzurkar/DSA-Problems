@@ -54,7 +54,7 @@ void printDoubleLinkedlist(Node* head) {
     cout << endl;
 }
 
-Node * deleteionAtHead(Node * head) {
+Node * deletionAtHead(Node * head) {
     if(head == NULL || head->next == nullptr) {
         return nullptr;
     } 
@@ -65,6 +65,25 @@ Node * deleteionAtHead(Node * head) {
     head->back = nullptr;
     prev->next = nullptr;
 
+    delete prev;
+    return head;
+}
+
+Node * deletionAtTail(Node * head) {
+    if(head == NULL || head->next == nullptr) {
+        return nullptr;
+    } 
+
+    Node * tail = head;
+    while(tail != NULL && tail->next != nullptr) {
+        tail = tail->next;
+    }
+
+    Node * prev = tail->back;
+    tail->back = nullptr;
+    prev->next = nullptr;
+
+    delete tail;
     return head;
 }
 
@@ -77,7 +96,12 @@ int main()
 
     cout << endl;
     cout << "Deleteion of node at head." << endl;
-    root = deleteionAtHead(root);
+    root = deletionAtHead(root);
+    printDoubleLinkedlist(root);
+
+    cout << endl;
+    cout << "Deleteion of node at tail." << endl;
+    root = deletionAtTail(root);
     printDoubleLinkedlist(root);
     return 0;
 }
