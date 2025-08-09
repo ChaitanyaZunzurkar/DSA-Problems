@@ -87,10 +87,50 @@ Node * deletionAtTail(Node * head) {
     return head;
 }
 
+Node * deletionAtKthNode(Node * head , int k) {
+    cout << "Deleteion of node at " << k <<  "th node." << endl;
+    if(head == NULL || head->next == nullptr) {
+        return nullptr;
+    } 
+
+    int i = 0;
+    Node * curr = head;
+    while(curr != NULL) {
+        i++;
+        if(i == k) {
+            break;
+        }
+        curr = curr->next;
+    }
+
+    Node * prev = curr->back;
+    Node * front  = curr->next;
+
+    if(prev == NULL && front == NULL) {
+        delete curr;
+        return NULL;
+    } 
+    else if(prev == NULL) {
+        return deletionAtHead(head);
+    }
+    else if(front == NULL) {
+        return deletionAtTail(head);
+    }
+
+    prev->next = front;
+    front->back = prev;
+
+    curr->next = nullptr;
+    curr->back = nullptr;
+
+    delete curr;
+    return head;
+}
+
 int main()
 {
-    const int n = 7;
-    int arr[] = {10 , 20 , 30 , 40 , 50 , 60 , 70};
+    const int n = 12;
+    int arr[] = {10 , 20 , 30 , 40 , 50 , 60 , 70 , 80 , 90 , 100 , 110 , 120};
     Node * root = arrToDoubleLinkedList(arr , n);
     printDoubleLinkedlist(root);
 
@@ -102,6 +142,10 @@ int main()
     cout << endl;
     cout << "Deleteion of node at tail." << endl;
     root = deletionAtTail(root);
+    printDoubleLinkedlist(root);
+
+    cout << endl;
+    root = deletionAtKthNode(root , 5);
     printDoubleLinkedlist(root);
     return 0;
 }
