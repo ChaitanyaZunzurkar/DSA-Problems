@@ -2,18 +2,18 @@
 using namespace std;
 
 class Node {
-    public :
+    public: 
         int val;
         Node * next;
         Node * back;
 
-        Node (int val , Node * next , Node * back) {
+        Node(int val , Node * next , Node * back) {
             this->val = val;
             this->next = next;
             this->back = back;
         }
 
-        Node (int val) {
+        Node(int val) {
             this->val = val;
             this->next = nullptr;
             this->back = nullptr;
@@ -43,10 +43,9 @@ void printDoubleLinkedlist(Node* head) {
         tail = head;           
         head = head->next;
     }
-
     cout << endl;
-    cout << "This is linked list traversed from the tail" << endl;
 
+    cout << "This is linked list traversed from the tail" << endl;
     while (tail != NULL) {
         cout << tail->val << " ";
         tail = tail->back;
@@ -55,11 +54,30 @@ void printDoubleLinkedlist(Node* head) {
     cout << endl;
 }
 
+Node * deleteionAtHead(Node * head) {
+    if(head == NULL || head->next == nullptr) {
+        return nullptr;
+    } 
+
+    Node * prev = head;
+    head = head->next;
+
+    head->back = nullptr;
+    prev->next = nullptr;
+
+    return head;
+}
+
 int main()
 {
     const int n = 7;
     int arr[] = {10 , 20 , 30 , 40 , 50 , 60 , 70};
     Node * root = arrToDoubleLinkedList(arr , n);
+    printDoubleLinkedlist(root);
+
+    cout << endl;
+    cout << "Deleteion of node at head." << endl;
+    root = deleteionAtHead(root);
     printDoubleLinkedlist(root);
     return 0;
 }
