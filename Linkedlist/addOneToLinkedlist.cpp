@@ -33,6 +33,8 @@ void printLinkedlist(Node * root) {
     cout << endl;
 }
 
+// Method 1
+// By reversing the linkedlist 
 Node* reverseLinkedList(Node* head) {
     Node* prev = NULL;
     Node* curr = head;
@@ -77,6 +79,36 @@ Node * addOneToLinkedlist(Node * head) {
     return head;
 }
 
+// Method 2
+// using recursion 
+int totalCarryEstimator(Node * temp) {
+    if(temp == NULL) {
+        return 1;
+    }
+
+    int carry = totalCarryEstimator(temp->next);
+    temp->val = temp->val + carry;
+
+    if(temp->val < 10) {
+        return 0;
+    }
+
+    temp->val = 0;
+    return 1;
+}
+
+Node * addOne(Node * head) {
+    int  carry = totalCarryEstimator(head);
+    if(carry == 1) {
+        Node * newNode = new Node(1);
+        newNode->next = head;
+        return newNode;
+    }
+
+    return head;
+}
+
+
 int main()
 {
     const int n = 3;
@@ -84,7 +116,11 @@ int main()
     Node * root = arrToLinkedList(arr , n);
     printLinkedlist(root);
     
-    root = addOneToLinkedlist(root);
+    // root = addOneToLinkedlist(root);
+    // printLinkedlist(root);
+
+    root = addOne(root);
     printLinkedlist(root);
+
     return 0;
 }
