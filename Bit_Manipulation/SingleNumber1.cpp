@@ -9,6 +9,7 @@ int main()
     for(int i = 0; i < n; i++) {
         cin >> arr[i];
     }
+    
     int XOR = 0;
     for(int i = 0; i < n; i++) {
         XOR ^= arr[i];
