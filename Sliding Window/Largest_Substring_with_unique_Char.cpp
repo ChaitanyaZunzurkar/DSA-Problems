@@ -42,13 +42,37 @@ int lengthOfLongestSubstring_brute(string s) {
     return maxi;
 }
 
+int lengthOfLongestSubstring_optimal(string s) {
+    int n = s.size();
+    int maxi = 0;
+    int length = 0;
+    int l = 0;
+    int r = 0;
+    vector<int> hsh(256 , -1);
+
+    while (r < n) {
+        if(hsh[s[r]] != -1) {
+            if(hsh[s[r]] >= l) {
+                l = hsh[s[r]] + 1;
+            }
+        }
+
+        length = r - l + 1;
+        maxi = max(length , maxi);
+        hsh[s[r]] = r;
+        r++;
+    }
+
+    return maxi;
+}
+
 int main() {
     string s;
 
     cout << "Enter a string: ";
     getline(cin, s);
 
-    int ans = lengthOfLongestSubstring_brute(s);
+    int ans = lengthOfLongestSubstring_optimal(s);
 
     cout << "Length of longest substring without repeating characters: " << ans << endl;
 
