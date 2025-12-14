@@ -4,12 +4,14 @@ using namespace std;
 /*
     Definition of Binary Tree Node
 */
-struct TreeNode {
+struct TreeNode
+{
     int val;
-    TreeNode* left;
-    TreeNode* right;
+    TreeNode *left;
+    TreeNode *right;
 
-    TreeNode(int x) {
+    TreeNode(int x)
+    {
         val = x;
         left = NULL;
         right = NULL;
@@ -24,31 +26,36 @@ struct TreeNode {
     - -1 represents a NULL child
     - Queue helps us attach children correctly
 */
-TreeNode* buildTree() {
+TreeNode *buildTree()
+{
     int val;
     cin >> val;
 
     // If first value is -1, tree is empty
-    if(val == -1) return NULL;
+    if (val == -1)
+        return NULL;
 
-    TreeNode* root = new TreeNode(val);
-    queue<TreeNode*> q;
+    TreeNode *root = new TreeNode(val);
+    queue<TreeNode *> q;
     q.push(root);
 
-    while(!q.empty()) {
-        TreeNode* curr = q.front();
+    while (!q.empty())
+    {
+        TreeNode *curr = q.front();
         q.pop();
 
         int leftVal, rightVal;
         cin >> leftVal;
 
-        if(leftVal != -1) {
+        if (leftVal != -1)
+        {
             curr->left = new TreeNode(leftVal);
             q.push(curr->left);
         }
 
         cin >> rightVal;
-        if(rightVal != -1) {
+        if (rightVal != -1)
+        {
             curr->right = new TreeNode(rightVal);
             q.push(curr->right);
         }
@@ -65,8 +72,10 @@ TreeNode* buildTree() {
     - Height of a node =
         1 + maximum height of its left or right subtree
 */
-int height(TreeNode* root) {
-    if(root == NULL) {
+int height(TreeNode *root)
+{
+    if (root == NULL)
+    {
         return 0;
     }
 
@@ -86,29 +95,76 @@ int height(TreeNode* root) {
         3) Right subtree is balanced
     - This condition must hold true for EVERY node
 */
-bool isBalanced_brute(TreeNode* root) {
-    if(root == NULL) return true;
+bool isBalanced_brute(TreeNode *root)
+{
+    if (root == NULL)
+        return true;
 
     int leftHeight = height(root->left);
     int rightHeight = height(root->right);
 
     // Check balance condition at current node
-    if(abs(leftHeight - rightHeight) > 1) {
+    if (abs(leftHeight - rightHeight) > 1)
+    {
         return false;
     }
 
     // Recursively check balance for left and right subtrees
-    bool leftBalanced = isBalanced(root->left);
-    bool rightBalanced = isBalanced(root->right);
+    bool leftBalanced = isBalanced_brute(root->left);
+    bool rightBalanced = isBalanced_brute(root->right);
 
-    if(!leftBalanced || !rightBalanced) {
+    if (!leftBalanced || !rightBalanced)
+    {
         return false;
     }
 
     return true;
 }
 
-int main() {
+int height_optimal(TreeNode *root)
+{
+    // Base case:
+    // An empty tree has height 0 and is always balanced
+    if (root == NULL)
+    {
+        return 0;
+    }
+
+    // Recursively compute height of left subtree
+    int leftHeight = height(root->left);
+
+    // Recursively compute height of right subtree
+    int rightHeight = height(root->right);
+
+    // If either left or right subtree is already unbalanced,
+    // propagate -1 upward immediately
+    if (leftHeight == -1 || rightHeight == -1)
+    {
+        return -1;
+    }
+
+    // Check balance condition at current node
+    // If height difference is more than 1,
+    // current subtree becomes unbalanced
+    if (abs(leftHeight - rightHeight) > 1)
+    {
+        return -1;
+    }
+
+    // If subtree is balanced, return its height
+    // Current node contributes 1 level
+    return 1 + max(leftHeight, rightHeight);
+}
+
+bool isBalanced_optimal(TreeNode *root)
+{
+    // If height() returns -1, tree is unbalanced
+    // Otherwise, tree is balanced
+    return height(root) != -1;
+}
+
+int main()
+{
     /*
         INPUT FORMAT:
         - Enter tree in level order
@@ -119,11 +175,14 @@ int main() {
     */
 
     cout << "Enter tree nodes in level order (-1 for NULL):\n";
-    TreeNode* root = buildTree();
+    TreeNode *root = buildTree();
 
-    if(isBalanced_brute(root)) {
+    if (isBalanced_optimal(root))
+    {
         cout << "The binary tree is BALANCED\n";
-    } else {
+    }
+    else
+    {
         cout << "The binary tree is NOT BALANCED\n";
     }
 
