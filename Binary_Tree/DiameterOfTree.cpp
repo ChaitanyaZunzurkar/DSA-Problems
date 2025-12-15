@@ -61,42 +61,50 @@ int diameterOfBinaryTree_brute(Node* root) {
     return maxi;
 }
 
-// Function to find the
-// diameter of a binary tree
+// Function to find the diameter of a binary tree (OPTIMAL APPROACH)
 int diameterOfBinaryTree_optimal(Node *root)
 {
-    // Initialize the variable to
-    // store the diameter of the tree
+    // This variable will store the maximum diameter found so far.
+    // It is passed by reference so that all recursive calls
+    // can update the same value.
     int diameter = 0;
-    // Call the height function to traverse
-    // the tree and calculate diameter
+
+    // We start a depth-first traversal of the tree.
+    // While computing the height of each subtree,
+    // we will also update the diameter.
     height_optimal(root, diameter);
-    // Return the calculated diameter
+
+    // After the full traversal, 'diameter' contains
+    // the longest path between any two nodes in the tree.
     return diameter;
 }
 
 int height_optimal(Node *node, int &diameter)
 {
-    // Base case: If the node is null,
-    // return 0 indicating the
-    // height of an empty tree
+    // Base case:
+    // If the current node is NULL, the height of this subtree is 0.
     if (!node)
     {
         return 0;
     }
 
-    // Recursively calculate the
-    // height of left and right subtrees
+    // Recursively compute the height of the left subtree.
+    // During this recursion, the diameter may get updated.
     int lh = height_optimal(node->left, diameter);
+
+    // Recursively compute the height of the right subtree.
+    // During this recursion, the diameter may get updated.
     int rh = height_optimal(node->right, diameter);
 
-    // Update the diameter with the maximum
-    // of current diameter or sum of
-    // left and right heights
+    // For the current node, the longest path that passes through it
+    // is the sum of heights of its left and right subtrees.
+    // We compare this value with the maximum diameter seen so far
+    // and update it if needed.
     diameter = max(diameter, lh + rh);
 
-    // Return the height of
-    // the current node's subtree
+    // Return the height of the current subtree.
+    // Height is defined as:
+    // 1 (current node) + maximum of left and right subtree heights.
     return 1 + max(lh, rh);
 }
 
