@@ -88,7 +88,6 @@ vector<vector<int>> verticalTraversal(TreeNode* root) {
 
     return result;
 }
-
 /*
   Helper function to build a sample tree
 */
