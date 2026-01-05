@@ -52,7 +52,7 @@ bool preorder(TreeNode* node, TreeNode* target, vector<TreeNode*>& path) {
  * 3. Compare both paths from the start
  * 4. The last common node is the Lowest Common Ancestor
  */
-TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+TreeNode* lowestCommonAncestor_brute(TreeNode* root, TreeNode* p, TreeNode* q) {
     vector<TreeNode*> path_to_p;
     vector<TreeNode*> path_to_q;
 
@@ -69,6 +69,41 @@ TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
     // Last common node
     return path_to_p[i - 1];
 }
+
+TreeNode* lowestCommonAncestor_optimal(TreeNode* root, TreeNode* p, TreeNode* q) {
+
+    // Intuition:
+    // If we reach a null node, there is nothing to search here.
+    // If the current node is either p or q, we have found one of the targets,
+    // so return this node upward.
+    if (root == nullptr || root == p || root == q) {
+        return root;
+    }
+
+    // Intuition:
+    // Recursively search for p and q in the left and right subtrees.
+    // Each call returns:
+    // - nullptr if neither p nor q is found in that subtree
+    // - a non-null node if p or q (or their LCA) is found
+    TreeNode* left  = lowestCommonAncestor_optimal(root->left,  p, q);
+    TreeNode* right = lowestCommonAncestor_optimal(root->right, p, q);
+
+    // Intuition:
+    // If p and q are found in different subtrees,
+    // left and right will both be non-null.
+    // This means the current node is their lowest common ancestor.
+    if (left == nullptr) {
+        return right;
+    } 
+    else if (right == nullptr) {
+        return left;
+    } 
+    else {
+        // Both left and right are non-null → p and q split here
+        return root;
+    }
+}
+
 
 int main() {
     /**
@@ -101,7 +136,7 @@ int main() {
     TreeNode* p = root->left;                  // Node 5
     TreeNode* q = root->left->right->right;    // Node 4
 
-    TreeNode* lca = lowestCommonAncestor(root, p, q);
+    TreeNode* lca = lowestCommonAncestor_optimal(root, p, q);
 
     if (lca != nullptr) {
         cout << "Lowest Common Ancestor: " << lca->val << endl;
