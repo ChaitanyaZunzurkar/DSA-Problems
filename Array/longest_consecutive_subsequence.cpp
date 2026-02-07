@@ -76,6 +76,57 @@ int longestConsecutive_lastSmaller(vector<int> arr) {
 }
 
 /*
+INTUITION (Using unordered_set – Optimal Approach):
+
+1. Store all elements of the array in an unordered_set.
+   - This automatically removes duplicates.
+   - It allows O(1) average time lookups.
+
+2. For each element in the set, check whether it can be the
+   start of a consecutive sequence.
+   - An element is a start if (element - 1) does NOT exist in the set.
+
+3. Once a start is found, keep moving forward (element + 1, element + 2, ...)
+   as long as the next consecutive element exists in the set.
+
+4. Count the length of this sequence and update the maximum length found.
+
+5. Since each number is processed at most once, the overall time complexity
+   remains O(n).
+
+This approach avoids sorting and is the most efficient solution.
+*/
+int longestConsecutive_set(vector<int>& arr) {
+    int n = arr.size();
+    if (n == 0) return 0;
+
+    unordered_set<int> st;
+    for (int x : arr) {
+        st.insert(x);
+    }
+
+    int longest = 1;
+
+    for (auto it : st) {
+        // Check if 'it' is the start of a sequence
+        if (st.find(it - 1) == st.end()) {
+            int count = 1;
+            int x = it;
+
+            // Extend the sequence as long as consecutive elements exist
+            while (st.find(x + 1) != st.end()) {
+                x++;
+                count++;
+            }
+
+            longest = max(longest, count);
+        }
+    }
+
+    return longest;
+}
+
+/*
 Driver code to test both approaches.
 */
 int main() {
