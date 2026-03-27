@@ -1,73 +1,76 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-/*
-INTUITION:
----------
-Each child has a greed value g[i].
-Each cookie has a size s[j].
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        int n = g.size();
+        int m = s.size();
 
-A child is satisfied ONLY IF:
-        cookie_size >= child_greed
+        sort(g.begin(), g.end());  // greed factors
+        sort(s.begin(), s.end());  // cookie sizes
 
-To maximize the number of satisfied children:
-1. Sort both arrays.
-2. Use the smallest cookie that can satisfy the smallest greed child.
-   - If cookie ≥ greed → child is satisfied → move to next child.
-   - Else → cookie is too small → try next cookie.
+        /*
+        INTUITION:
 
-This greedy strategy works because:
-- Using small cookies for children with small greed saves large cookies for later.
-- We never waste a cookie that could satisfy a future child.
-*/
+        - We want to satisfy maximum number of children.
+        - Each child has a greed factor g[i]
+        - Each cookie has size s[j]
 
-int findContentChildren(vector<int>& g, vector<int>& s) {
-    sort(g.begin(), g.end()); // smallest greed first
-    sort(s.begin(), s.end()); // smallest cookie first
+        GREEDY IDEA:
+        - Always try to satisfy the least greedy child first.
+        - Give the smallest possible cookie that can satisfy that child.
 
-    int i = 0; // child pointer
-    int j = 0; // cookie pointer
-    int n1 = g.size();
-    int n2 = s.size();
+        WHY?
+        - If we waste a big cookie on a small greed child,
+          we might not be able to satisfy a more greedy child later.
 
-    while (i < n1 && j < n2) {
-        if (g[i] <= s[j]) {
-            // Cookie satisfies this child
-            i++; 
+        APPROACH:
+        - Sort both arrays.
+        - Use two pointers:
+            i -> child
+            j -> cookie
+        - If cookie >= greed → assign it and move both
+        - Else → try next bigger cookie
+        */
+
+        int i = 0; // pointer for children
+        int j = 0; // pointer for cookies
+
+        while(i < n && j < m) {
+            if(s[j] >= g[i]) {
+                i++; // child satisfied
+            }
+            j++; // move to next cookie
         }
-        // Move to next cookie no matter what
-        j++;
-    }
 
-    return i; // number of satisfied children
-}
+        return i; // number of satisfied children
+    }
+};
 
 int main() {
-    // Fast I/O
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+    int n, m;
 
-    int nChildren;
+    // input size of greed array
     cout << "Enter number of children: ";
-    cin >> nChildren;
+    cin >> n;
 
-    vector<int> g(nChildren);
-    cout << "Enter greed values of children:\n";
-    for (int i = 0; i < nChildren; i++)
-        cin >> g[i];
+    vector<int> g(n);
+    cout << "Enter greed factors: ";
+    for(int i = 0; i < n; i++) cin >> g[i];
 
-    int nCookies;
+    // input size of cookies array
     cout << "Enter number of cookies: ";
-    cin >> nCookies;
+    cin >> m;
 
-    vector<int> s(nCookies);
-    cout << "Enter sizes of cookies:\n";
-    for (int i = 0; i < nCookies; i++)
-        cin >> s[i];
+    vector<int> s(m);
+    cout << "Enter cookie sizes: ";
+    for(int i = 0; i < m; i++) cin >> s[i];
 
-    int ans = findContentChildren(g, s);
+    Solution obj;
+    int ans = obj.findContentChildren(g, s);
 
-    cout << "Maximum number of satisfied children = " << ans << "\n";
+    cout << "Maximum content children: " << ans << endl;
 
     return 0;
 }
