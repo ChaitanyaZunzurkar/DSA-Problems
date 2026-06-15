@@ -1,6 +1,21 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+void backtracking(vector<int>& nums, int start, vector<vector<int>>& allPermutations) {
+    if(start == nums.size()) {
+        allPermutations.push_back(nums);
+        return;
+    }
+
+    for(int i = start; i < nums.size(); i++) {
+        swap(nums[start], nums[i]);
+
+        backtracking(nums, start + 1, allPermutations);
+
+        swap(nums[start], nums[i]);
+    }
+}
+
 void nextPermutation(vector<int>& nums) {
     int n = nums.size();
     int ind = -1;
@@ -39,6 +54,20 @@ int main()
     for(int i = 0; i < nums.size(); i++) {
         cout << nums[i] << " ";
     }
+
+    // vector<vector<int>> allPermutations;
+    // backtracking(nums, 0, allPermutations);
+    // sort(allPermutations.begin(), allPermutations.end());
+
+    // auto last = unique(allPermutations.begin(), allPermutations.end());
+    // allPermutations.erase(last, allPermutations.end());
+
+    // for(int i = 0; i < allPermutations.size(); i++) {
+    //     if(nums == allPermutations[i]) {
+    //         nums = allPermutations[(i + 1) % allPermutations.size()];
+    //         break;
+    //     }
+    // }
 
     return 0;
 }
